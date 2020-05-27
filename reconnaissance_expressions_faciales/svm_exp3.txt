@@ -1,0 +1,40 @@
+#include <opencv \ cv.h>
+ #include <opencv \ highgui.h>
+ #include "opencv2 / ml / ml.hpp"
+
+ Void main () {
+  Flotteurs [10] = {0,0, 0,0, 1,0, 1,0, 0,0, 1,0, 1,0, 1,0, 1,0, 0,0};
+  Cv :: Mat lablesMat (10, 1, CV_32FC1, étiquettes);
+
+  Float trainingData [10] [2] = {{100, 10}, {150, 10}, {600, 200}, {600, 10}, {10, 100}, {455, 10}, {345, 255 }, {10, 501}, {401, 255}, {30, 150}};
+
+  Cv :: Mat trainDataMat (10, 2, CV_32FC1, trainingData);
+
+  // Définition des paramètres pour SVM
+  CvSVMParams params;
+  // Le type SVM est défini comme la classification n-classe n> = 2, permet une séparation imparfaite des classes
+  Params.svm_type = CvSVM :: C_SVC;
+  // Aucun mappage n'est effectué, la discrimination linéaire (ou régression) est effectuée dans l'espace d'entité d'origine.
+  Params.kernel_type = CvSVM :: LINEAR;
+  // Définit le critère de terminaison pour l'algorithme SVM.
+  // Arrêt de l'algorithme après que la précision dépendante de l'algorithme obtenue devient inférieure à epsilon
+  // ou exécuté pour un maximum de 100 itérations
+  Params.term_crit = cvTermCriteria (CV_TERMCRIT_ITER, 100, 1e-6);
+
+  CvSVM svm;
+  // Fonction d'appel
+  Svm.train (trainDataMat, lablesMat, cv :: Mat (), cv :: Mat (), params);
+
+  // Créer des fonctionnalités de test
+  Float testData [2] = {150, 15};
+
+  Cv :: Mat testDataMat (2, 1, CV_32FC1, testData);
+
+  // Prévoir la classe labele pour l'échantillon de données de test
+  Float predictLable = svm.predict (testDataMat);
+
+  Std :: cout << "Étiquette prédite:" << predictLable << "\ n";
+
+  Système ("PAUSE");
+
+ }
